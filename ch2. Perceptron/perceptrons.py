@@ -69,25 +69,22 @@ def XOR(x1, x2):
 
 # test
 test_array = [(0,0), (0,1), (1,0), (1,1)]
+test_array_NOT = [0, 1]
+gate_names = [AND, OR, NOT, NAND, XOR]
 
 if __name__ == "__main__":
-    print("AND")
-    for x1, x2 in test_array:
-        print(AND(x1,x2))
+    for gate_name in gate_names:
+        
+        print(gate_name.__name__ + " gate:")
 
-    print("OR")
-    for x1, x2 in test_array:
-        print(OR(x1,x2))
-
-    print("NOT")
-    for x1 in [0,1]:
-        print(NOT(x1))
-
-    print("NAND")
-    for x1, x2 in test_array:
-        print(NAND(x1,x2))
-
-    print("XOR")
-    for x1, x2 in test_array:
-        print(XOR(x1,x2))
+        # gate test
+        if gate_name.__name__ != "NOT":
+            for x1, x2 in test_array:
+                print("(", x1 , ",", x2, ") : " , gate_name(x1, x2))
+        
+        # NOT gate
+        else:
+            for x1 in test_array_NOT:
+                print("(", x1 , ") : " , gate_name(x1))
+        print()
 
