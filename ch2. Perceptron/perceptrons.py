@@ -48,18 +48,14 @@ def NOT(x1):
         return 0
     
 def NAND(x1, x2):
-    if x1 not in [0,1] or x2 not in [0,1]:
-        return None
-    
-    w1, w2, b = -1, -1, 1.5
+    tmp1 = AND(x1, x2)
+    tmp2 = NOT(tmp1)
+    return tmp2
 
-    x = np.array([x1, x2])
-    w = np.array([w1, w2])
-    tmp = np.sum(x*w) + b
-    if tmp > 0:
-        return 1
-    else:
-        return 0
+def NOR(x1, x2):
+    tmp1 = OR(x1, x2)
+    tmp2 = NOT(tmp1)
+    return tmp2
 
 def XOR(x1, x2):
     tmp1 = NAND(x1, x2)
@@ -67,10 +63,15 @@ def XOR(x1, x2):
     tmp3 = AND(tmp1, tmp2)
     return tmp3
 
+def XNOR(x1, x2):
+    tmp1 = XOR(x1, x2)
+    tmp2 = NOT(tmp1)
+    return tmp2
+
 # test
 test_array = [(0,0), (0,1), (1,0), (1,1)]
 test_array_NOT = [0, 1]
-gate_names = [AND, OR, NOT, NAND, XOR]
+gate_names = [AND, OR, NOT, NAND, NOR, XOR, XNOR]
 
 if __name__ == "__main__":
     for gate_name in gate_names:
