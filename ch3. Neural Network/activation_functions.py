@@ -9,22 +9,22 @@ def sigmoid(x):
 def relu(x):
     return np.maximum(0, x)
 
-# step test
-a = np.array([1, -1])
-print(a)
-b = (a>0).astype(np.int32)
-print(b)
+if __name__=="__main__":
+    def activation_test(function_name, value):
+        print(function_name.__name__ + "(" + str(value) + ") : ", end="")
+        print(function_name(value))
 
-print(step_function(a))
-print(step_function(1))
-print(step_function(2))
-print(step_function(0))
-print(step_function(-1))
+    activation_test(step_function, -1)
+    activation_test(step_function, np.array([1]))
+    activation_test(step_function, np.array([-2,0,4]))
+    print()
 
-# sigmoid test
-print(sigmoid(1))
-print(sigmoid(np.array([0,2, -2])))
+    activation_test(sigmoid, -1)
+    activation_test(sigmoid, np.array([0]))
+    activation_test(sigmoid, np.array([-2,0,1,2]))
+    print()
 
-# relu test
-print(relu(0))
-print(relu(np.array([-3,-1,1,4])))
+    activation_test(relu, -1)
+    activation_test(relu, np.array([1]))
+    activation_test(relu, np.array([-1,0,1]))
+    print()
