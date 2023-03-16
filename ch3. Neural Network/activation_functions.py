@@ -9,6 +9,16 @@ def sigmoid(x):
 def relu(x):
     return np.maximum(0, x)
 
+def identity(x):
+    return x
+
+def softmax(x):
+    c = np.max(x)
+    exp_x = np.exp(x-c)
+    sum_exp_x = np.sum(exp_x)
+    return exp_x / sum_exp_x
+
+
 if __name__=="__main__":
     def activation_test(function_name, value):
         print(function_name.__name__ + "(" + str(value) + ") : ", end="")
@@ -27,4 +37,14 @@ if __name__=="__main__":
     activation_test(relu, -1)
     activation_test(relu, np.array([1]))
     activation_test(relu, np.array([-1,0,1]))
+    print()
+
+    activation_test(identity, -1)
+    activation_test(identity, np.array([0]))
+    activation_test(identity, np.array([-1,0,1]))
+    print()
+
+    activation_test(softmax, -1)
+    activation_test(softmax, np.array([-1, 1]))
+    activation_test(softmax, np.array([50,53,55]))
     print()
