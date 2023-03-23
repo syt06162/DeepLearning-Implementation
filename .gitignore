@@ -1,2 +1,9 @@
-.vscode/
-testing/
+.vscode
+__pycache__/
+
+# for test
+testing
+
+# mnist dataset
+/dataset
+!mnist.py
