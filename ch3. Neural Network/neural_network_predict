@@ -11,12 +11,36 @@ sys.path.append(parent_path)
 from dataset.mnist import load_mnist
 from common.activation_functions import sigmoid, softmax
 
-# mnist dataset
-(x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=False)
 
-# print (x_train, t_train), (x_test, t_test)
-print(x_train.shape)  # (60000, 784)
-print(t_train.shape)  # (60000,)
+def load_dataset():
+    # mnist dataset
+    (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=False)
+    
+    train_num, image_size = x_train.shape
+    test_num = x_test.shape[0]
+    # print (x_train, t_train), (x_test, t_test
+    print(f"train: {train_num}, test: {test_num}")
+    print("Training is already done.")
+    print(f"image size: {image_size}")
+    print()
+    
+    return (x_test, t_test)
 
-print(x_test.shape)  # (10000, 784)
-print(t_test.shape)  # (10000,)
+def init_pretrained_network():
+    with open("ch3. Neural Network/sample_weight.pkl", 'rb') as f:
+        # A file containing pre-trained weight parameters.
+        # Predicting directly without training.
+        network = pickle.load(f)
+
+    return network
+
+def predict():
+    pass
+
+
+# test predicting
+(x_test, t_test) = load_dataset()
+network = init_pretrained_network()
+
+# predict : to-do
+# batch: to-do
