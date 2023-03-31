@@ -60,16 +60,23 @@ def predict(network, x):
 network = init_pretrained_network()
 
 
-# predict, accuracy
-accuracy_count = 0
-for i in range(len(x_test)):
-    y = predict(network, x_test[i])
-    p = np.argmax(y)
-    if p == t_test[i]:
-        accuracy_count += 1
+# # (no batch) predict, accuracy
+# accuracy_count = 0
+# for i in range(len(x_test)):
+#     y = predict(network, x_test[i])
+#     p = np.argmax(y)
+#     if p == t_test[i]:
+#         accuracy_count += 1
 
+# print("accuracy:" , accuracy_count / x_test.shape[0])
+
+
+# (batch) predict, accuracy
+accuracy_count = 0
+batch_size = 128
+for i in range(0, len(x_test), batch_size):
+    y_batch = predict(network, x_test[i:i+batch_size])
+    p = np.argmax(y_batch, axis=1)
+    accuracy_count += np.sum(p == t_test[i:i+batch_size])
 
 print("accuracy:" , accuracy_count / x_test.shape[0])
-
-
-# batch: to-do
