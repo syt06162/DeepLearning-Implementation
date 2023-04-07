@@ -4,7 +4,11 @@ def numerical_gradient(f, x):
     h = 1e-4
     gradient = np.zeros_like(x)
 
-    for i in range(np.size(x)):
+    # multi-dim support
+    it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
+
+    while not it.finished:
+        i = it.multi_index # index
         x_i = x[i]
 
         # f(x+h)
@@ -17,6 +21,8 @@ def numerical_gradient(f, x):
 
         gradient[i] = (fxh1 - fxh2) / (2*h)
         x[i] = x_i # recover
+
+        it.iternext() # next index
         
     return gradient
 
@@ -35,12 +41,13 @@ if __name__ == "__main__":
 
     # numerical gradient
     def fun_1(x):
-        return x[0]**2 + x[1]**2
+        return np.sum(x**2)
     
     print("numerical_gradient: ")
     print("f(x0, x1) = x0² + x1²")
     print([3.0, 4.0], "->" , numerical_gradient(fun_1, np.array([3.0, 4.0])))  
     print([0.0, 2.0], "->" , numerical_gradient(fun_1, np.array([0.0, 2.0])))
+    print([[0.0, 2.0], [4,8]], "->\n" , numerical_gradient(fun_1, np.array([[0.0, 2.0], [4,8]])))
     print()
 
     # gradient descent
