@@ -60,6 +60,8 @@ class TwoLayerNet:
         gradients['W1'] = np.dot(x.T, dz1)
         gradients['b1'] = np.sum(dz1, axis=0)
 
+        return gradients
+
 
 
     # ch4 contents, but very slow
@@ -75,5 +77,14 @@ class TwoLayerNet:
         return grads
 
     def accuracy(self, x, t):
-        pass
+        y = self.predict(x)
+
+        # get max index
+        y = np.argmax(y, axis=1)
+        t = np.argmax(t, axis=1)
+
+        correct = np.sum(y==t)
+        accuracy = correct / np.size(y)
+
+        return accuracy
 
