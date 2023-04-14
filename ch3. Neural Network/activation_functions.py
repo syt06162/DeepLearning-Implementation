@@ -13,10 +13,14 @@ def identity(x):
     return x
 
 def softmax(x):
-    c = np.max(x)
-    exp_x = np.exp(x-c)
-    sum_exp_x = np.sum(exp_x)
-    return exp_x / sum_exp_x
+    if x.ndim == 2:
+        x = x.T
+        x = x - np.max(x, axis=0)
+        y = np.exp(x) / np.sum(np.exp(x), axis=0)
+        return y.T 
+    elif x.ndim == 1:
+        x = x - np.max(x)
+        return np.exp(x) / np.sum(np.exp(x))
 
 
 if __name__=="__main__":
@@ -44,7 +48,7 @@ if __name__=="__main__":
     activation_test(identity, np.array([-1,0,1]))
     print()
 
-    activation_test(softmax, -1)
     activation_test(softmax, np.array([-1, 1]))
     activation_test(softmax, np.array([50,53,55]))
+    activation_test(softmax, np.array([[1,2,3], [3,1,3]]))
     print()
