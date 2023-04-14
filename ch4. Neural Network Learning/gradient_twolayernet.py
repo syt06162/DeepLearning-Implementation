@@ -51,7 +51,7 @@ class TwoLayerNet:
         y = softmax(a2)
 
         # backward
-        dy = (y - t) / batch_num  # ????
+        dy = (y - t) / batch_num 
         gradients['W2'] = np.dot(z1.T, dy)
         gradients['b2'] = np.sum(dy, axis=0)
 
@@ -84,7 +84,7 @@ class TwoLayerNet:
         t = np.argmax(t, axis=1)
 
         correct = np.sum(y==t)
-        accuracy = correct / np.size(y)
+        accuracy = correct / y.shape[0]
 
         return accuracy
 
