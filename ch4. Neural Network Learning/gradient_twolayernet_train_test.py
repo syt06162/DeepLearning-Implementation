@@ -62,5 +62,27 @@ for i in range(iter_nums):
         print()
         
 
-print("epoch {:3d}".format(int(iter_nums/iter_per_epoch)))
+# final result
+print("final result :: epoch {:3d}".format(int(iter_nums/iter_per_epoch)))
 print("train acc, test acc | {:.3f}, {:.3f}".format(train_acc, test_acc))
+
+
+# plot
+import matplotlib.pyplot as plt 
+epochs = [i for i in range(len(train_acc_list))]
+
+# Plotting train and test accuracy
+plt.plot(epochs, train_acc_list, label='Train Accuracy')
+plt.plot(epochs, test_acc_list, label='Test Accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+
+# Plotting train loss
+plt.figure()
+plt.plot(epochs, train_loss_list, label='Train Loss', color='red')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+
+plt.show()
