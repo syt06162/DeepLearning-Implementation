@@ -47,3 +47,20 @@ for i in range(iter_nums):
     for key in ['W1', 'b1', 'W2', 'b2']: 
         network.params[key] = network.params[key] - learning_rate*gradient[key]
     
+    # train/test loss and accuracy (per epoch)
+    if i % iter_per_epoch == 0:
+        train_loss = network.loss(x_train, t_train)
+        train_loss_list.append(train_loss)
+
+        train_acc = network.accuracy(x_train, t_train)
+        test_acc = network.accuracy(x_test, t_test)
+        train_acc_list.append(train_acc)
+        test_acc_list.append(test_acc)
+        
+        print("epoch {:3d} :: train loss | {:.3f}".format(int((i/iter_per_epoch)), train_loss))
+        print("train acc, test acc | {:.3f}, {:.3f}".format(train_acc, test_acc))
+        print()
+        
+
+print("epoch {:3d}".format(int(iter_nums/iter_per_epoch)))
+print("train acc, test acc | {:.3f}, {:.3f}".format(train_acc, test_acc))
