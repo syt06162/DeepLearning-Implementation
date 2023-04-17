@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 ### important! 중요!
-# If the current working directory is ch3, please work from the parent directory.
+# If the current working directory is ch4, please work from the parent directory.
 parent_path = os.getcwd()
 sys.path.append(parent_path) 
 
