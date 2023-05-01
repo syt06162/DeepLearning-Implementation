@@ -26,6 +26,25 @@ class Sigmoid:
     def backward(self, dout):
         dx = dout * (self.out) * (1 - self.out)
         return dx
+    
+class Affine:
+    def __init__(self, W, b):
+        self.W = W
+        self.b = b
+        self.x = None
+        self.dW = None
+        self.db = None
+    
+    def forward(self, x):
+        self.x = x
+        return np.dot(x, self.W) + self.b
+
+    def backward(self, dout):
+        dx = np.dot(dout, self.W.T)
+        self.dW = np.dot(self.x.T, dout)
+        self.db = np.sum(dout, axis=0)
+        return dx
+
 
 
 if __name__ == "__main__":
@@ -56,3 +75,21 @@ if __name__ == "__main__":
     print("backward:")
     print(sigmoid.backward(x))
     print()
+
+
+    # affine test - batch
+    x = np.array( [[1,2], [10,20] ]) # batch
+    W = np.array( [[3,4,5] , [6,7,8]] )
+    b = np.array( [10,11,12] )
+    affine = Affine(W,b)
+
+    print("# affine test")
+    print(x)
+    print("forward:")
+    y = affine.forward(x)
+    print(y)
+    print("backward:")
+    print(affine.backward(y))
+    print()
+
+    
