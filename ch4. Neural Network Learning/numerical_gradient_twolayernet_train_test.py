@@ -8,7 +8,7 @@ parent_path = os.getcwd()
 sys.path.append(parent_path) 
 
 from dataset.mnist import load_mnist
-from gradient_twolayernet import TwoLayerNet
+from numerical_gradient_twolayernet import TwoLayerNet
 
 (x_train, t_train), (x_test, t_test) = \
     load_mnist(normalize=True, one_hot_label=True)
