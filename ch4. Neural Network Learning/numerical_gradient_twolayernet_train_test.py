@@ -45,7 +45,8 @@ for i in range(iter_nums):
     
     # parameter update
     for key in ['W1', 'b1', 'W2', 'b2']: 
-        network.params[key] = network.params[key] - learning_rate*gradient[key]
+        network.params[key] -= learning_rate*gradient[key]
+        # network.params[key] = network.params[key] - learning_rate*gradient[key] # danger
     
     # train/test loss and accuracy (per epoch)
     if i % iter_per_epoch == 0:
