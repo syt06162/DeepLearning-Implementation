@@ -8,7 +8,7 @@ parent_path = os.getcwd()
 sys.path.append(parent_path) 
 
 from dataset.mnist import load_mnist
-from gradient_twolayernet import TwoLayerNet
+from grad_numerical_twolayernet import TwoLayerNet
 
 (x_train, t_train), (x_test, t_test) = \
     load_mnist(normalize=True, one_hot_label=True)
@@ -31,10 +31,8 @@ train_loss_list = []
 train_acc_list = []
 test_acc_list = []
 
-
 import math
 iter_per_epoch = max( math.ceil(train_size / batch_size), 1)
-print(train_size, batch_size, iter_per_epoch)
 
 for i in range(iter_nums):
     # batch_mask (SGD)
@@ -44,12 +42,11 @@ for i in range(iter_nums):
 
     # gradient
     gradient = network.gradient(x_batch, t_batch)
+    
     # parameter update
     for key in ['W1', 'b1', 'W2', 'b2']: 
         network.params[key] -= learning_rate*gradient[key]
-        # network.params[key] = network.params[key] - learning_rate*gradient[key] # error!!
-
-    print(network.params['W1'])
+        # network.params[key] = network.params[key] - learning_rate*gradient[key] # danger
     
     # train/test loss and accuracy (per epoch)
     if i % iter_per_epoch == 0:
