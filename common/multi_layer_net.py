@@ -39,17 +39,19 @@ class MultiLayerNet:
         self.weight_decay_lambda = weight_decay_lambda
         self.params = {}
 
-        # initialize weight
+        # initialize weights
         self.__init_weight(weight_init_std)
 
-        # layers - todo
+        # initialize layers
+        self.__init_layer(activation)
     
-    """
-    # initialize weight
-    * weigt_init_std: 'relu' or 'he' -> 'He' (2/sqrt(n))
-                      'sigmoid' or 'xavier' -> 'Xavier' (1/sqrt(n))
-    """
+    
     def __init_weight(self, weight_init_std):
+        """
+        # initialize weight
+        * weigt_init_std: 'relu' or 'he' -> 'He' (2/sqrt(n))
+                        'sigmoid' or 'xavier' -> 'Xavier' (1/sqrt(n))
+        """
         weight_init_std = weight_init_std.lower()
 
         network_size_list = [self.input_size] + self.hidden_size_list + [self.output_size]
@@ -66,11 +68,25 @@ class MultiLayerNet:
             # bias
             self.params['b'+str(idx)] =  np.zeros_like(network_size_list[idx-1], network_size_list[idx])
 
+    def __init_layer(self, activation):
+        """
+        # initialize layer
+        * activation: 'relu' or 'sigmoid'
+        """
+        activation_layer = {'relu': Relu, 'sigmoid': Sigmoid}
+        self.layers = OrderedDict()
+        
+        # hidden layers
+        for idx in range(1, self.hidden_layer_num + 1):
+            self.layers['Affine' + str(idx)] = Affine(self.params['W' + str(idx)], self.params['b' + str(idx)])
+            self.layers['Activation' + str(idx)] = activation_layer[activation]()
+        
+        # last layer
+        idx = self.hidden_layer_num + 1
+        self.layers['Affine' + str(idx)] = Affine(self.params['W' + str(idx)], self.params['b' + str(idx)])
+        self.last_layer = SoftmaxWithLoss()
 
-            
-
-
-
+ 
     # def predict(self, x):
     #     ### ch5: predict with layers
     #     for layer in self.layers.values():
