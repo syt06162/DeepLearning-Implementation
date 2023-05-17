@@ -129,7 +129,7 @@ class MultiLayerNet:
 
         # backward
         dout = 1
-        dout = self.lastLayer.backward(dout)
+        dout = self.last_layer.backward(dout)
 
         layers = list(self.layers.values())
         layers.reverse()
