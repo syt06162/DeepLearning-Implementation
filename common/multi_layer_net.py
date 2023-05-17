@@ -57,10 +57,10 @@ class MultiLayerNet:
         for idx in range(1, len(network_size_list)):
             # He
             if weight_init_std in ['relu' , 'he']:
-                std_scale = np.sqrt(2 / network_size_list[idx-1])
+                std_scale = np.sqrt(2.0 / network_size_list[idx-1])
             # Xavier
             elif weight_init_std in ['sigmoid' , 'xavier']:
-                std_scale = np.sqrt(1 / network_size_list[idx-1])
+                std_scale = np.sqrt(1.0 / network_size_list[idx-1])
 
             # weight
             self.params['W'+str(idx)] = std_scale * np.random.randn(network_size_list[idx-1], network_size_list[idx])
@@ -140,7 +140,7 @@ class MultiLayerNet:
         grads = {}
         for idx in range(1, self.hidden_layer_num+2):
             # weight decay or not
-            grads['W' + str(idx)] = self.layers['Affine' + str(idx)]['W' + str(idx)] \
+            grads['W' + str(idx)] = self.layers['Affine' + str(idx)].dW \
                 + self.weight_decay_lambda * self.layers['Affine' + str(idx)].W
             grads['b' + str(idx)] = self.layers['Affine' + str(idx)].db
 
