@@ -65,7 +65,7 @@ class MultiLayerNet:
             # weight
             self.params['W'+str(idx)] = std_scale * np.random.randn(network_size_list[idx-1], network_size_list[idx])
             # bias
-            self.params['b'+str(idx)] =  np.zeros_like(network_size_list[idx-1], network_size_list[idx])
+            self.params['b'+str(idx)] =  np.zeros_like(network_size_list[idx])
 
     def __init_layer(self, activation):
         """
