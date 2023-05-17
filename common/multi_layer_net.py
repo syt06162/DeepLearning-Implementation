@@ -65,7 +65,7 @@ class MultiLayerNet:
             # weight
             self.params['W'+str(idx)] = std_scale * np.random.randn(network_size_list[idx-1], network_size_list[idx])
             # bias
-            self.params['b'+str(idx)] =  np.zeros_like(network_size_list[idx])
+            self.params['b'+str(idx)] =  np.zeros(network_size_list[idx])
 
     def __init_layer(self, activation):
         """
@@ -113,7 +113,9 @@ class MultiLayerNet:
 
         # get max index
         y = np.argmax(y, axis=1)
-        t = np.argmax(t, axis=1)
+
+        # batch support
+        if t.ndim != 1 : t = np.argmax(t, axis=1)
 
         correct = np.sum(y==t)
         accuracy = correct / y.shape[0]
