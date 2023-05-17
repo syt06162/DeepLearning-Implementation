@@ -45,7 +45,6 @@ class MultiLayerNet:
         # initialize layers
         self.__init_layer(activation)
     
-    
     def __init_weight(self, weight_init_std):
         """
         # initialize weight
@@ -87,65 +86,74 @@ class MultiLayerNet:
         self.last_layer = SoftmaxWithLoss()
 
  
-    # def predict(self, x):
-    #     ### ch5: predict with layers
-    #     for layer in self.layers.values():
-    #         x = layer.forward(x)
-    #     return x
+    def predict(self, x):
+        ### ch5: predict with layers
+        for layer in self.layers.values():
+            x = layer.forward(x)
+        return x
 
-    # def loss(self, x, t):
-    #     y = self.predict(x)
-    #     ### ch5: lastLayer
-    #     return self.lastLayer.forward(y, t)
-    
-    # def accuracy(self, x, t):
-    #     y = self.predict(x)
+    def loss(self, x, t):
+        ### ch5: lastLayer
+        y = self.predict(x)
 
-    #     # get max index
-    #     y = np.argmax(y, axis=1)
-    #     t = np.argmax(t, axis=1)
+        # not using weight decay
+        if self.weight_decay_lambda <= 0:
+            return self.lastLayer.forward(y, t)
 
-    #     correct = np.sum(y==t)
-    #     accuracy = correct / y.shape[0]
-
-    #     return accuracy
-    
-
-    
-    # ### ch5 contents, very fast
-    # def gradient(self, x, t):
-    #     ### ch5: with layers
+        # using weight decay
+        weight_decay = 0
+        for idx in range(1, self.hidden_layer_num + 2):
+            W = self.params['W' + str(idx)]
+            weight_decay += 0.5 * self.weight_decay_lambda * np.sum(W ** 2)
         
-    #     # forward
-    #     self.loss(x, t)
+        return self.lastLayer.forward(y, t)
+    
+    def accuracy(self, x, t):
+        y = self.predict(x)
 
-    #     # backward
-    #     dout = 1
-    #     dout = self.lastLayer.backward(dout)
+        # get max index
+        y = np.argmax(y, axis=1)
+        t = np.argmax(t, axis=1)
 
-    #     layers = list(self.layers.values())
-    #     layers.reverse()
-    #     for layer in layers:
-    #         dout = layer.backward(dout)
+        correct = np.sum(y==t)
+        accuracy = correct / y.shape[0]
+
+        return accuracy
+
+    ### ch5 contents, very fast
+    def gradient(self, x, t):
+        ### ch5: with layers
         
-    #     # grads
-    #     grads = {}
-    #     grads['W1'] = self.layers['Affine1'].dW
-    #     grads['b1'] = self.layers['Affine1'].db
-    #     grads['W2'] = self.layers['Affine2'].dW
-    #     grads['b2'] = self.layers['Affine2'].db
+        # forward
+        self.loss(x, t)
 
-    #     return grads
+        # backward
+        dout = 1
+        dout = self.lastLayer.backward(dout)
 
-    # # ch4 contents, very slow
-    # def numerical_gradient(self, x, t):
-    #     loss_W = lambda W: self.loss(x, t)
+        layers = list(self.layers.values())
+        layers.reverse()
+        for layer in layers:
+            dout = layer.backward(dout)
+        
+        # grads
+        grads = {}
+        for idx in range(1, self.hidden_layer_num+2):
+            # weight decay or not
+            grads['W' + str(idx)] = self.layers['Affine' + str(idx)]['W' + str(idx)] \
+                + self.weight_decay_lambda * self.layers['Affine' + str(idx)].W
+            grads['b' + str(idx)] = self.layers['Affine' + str(idx)].db
 
-    #     grads = {}
-    #     grads['W1'] = numerical_gradient(loss_W, self.params['W1'])
-    #     grads['b1'] = numerical_gradient(loss_W, self.params['b1'])
-    #     grads['W2'] = numerical_gradient(loss_W, self.params['W2'])
-    #     grads['b2'] = numerical_gradient(loss_W, self.params['b2'])
+        return grads
 
-    #     return grads
+    # ch4 contents, very slow
+    def numerical_gradient(self, x, t):
+        loss_W = lambda W: self.loss(x, t)
+
+        grads = {}
+        for idx in range(1, self.hidden_layer_num+2):
+            grads['W' + str(idx)] = numerical_gradient(loss_W, self.params['W' + str(idx)])
+            grads['b' + str(idx)] = numerical_gradient(loss_W, self.params['b' + str(idx)])
+        
+        return grads
 
