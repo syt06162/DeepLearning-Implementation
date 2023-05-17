@@ -93,12 +93,12 @@ class MultiLayerNet:
         return x
 
     def loss(self, x, t):
-        ### ch5: lastLayer
+        ### ch5: last_layer
         y = self.predict(x)
 
         # not using weight decay
         if self.weight_decay_lambda <= 0:
-            return self.lastLayer.forward(y, t)
+            return self.last_layer.forward(y, t)
 
         # using weight decay
         weight_decay = 0
@@ -106,7 +106,7 @@ class MultiLayerNet:
             W = self.params['W' + str(idx)]
             weight_decay += 0.5 * self.weight_decay_lambda * np.sum(W ** 2)
         
-        return self.lastLayer.forward(y, t)
+        return self.last_layer.forward(y, t)
     
     def accuracy(self, x, t):
         y = self.predict(x)
