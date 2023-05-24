@@ -49,6 +49,8 @@ class MultiLayerNetExtend:
         self.weight_decay_lambda = weight_decay_lambda
         self.params = {}
 
+        self.use_batchnorm = use_batchnorm
+
         # initialize weights
         self.__init_weight(weight_init_std)
 
@@ -123,9 +125,9 @@ class MultiLayerNetExtend:
                 x = layer.forward(x)
         return x
 
-    def loss(self, x, t):
+    def loss(self, x, t, train_flag=False):
         ### ch5: last_layer
-        y = self.predict(x)
+        y = self.predict(x, train_flag)
 
         # not using weight decay
         if self.weight_decay_lambda <= 0:
@@ -157,8 +159,8 @@ class MultiLayerNetExtend:
     def gradient(self, x, t):
         ### ch5: with layers
         
-        # forward
-        self.loss(x, t)
+        # *E* forward
+        self.loss(x, t, train_flag=True)
 
         # backward
         dout = 1
