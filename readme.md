@@ -9,3 +9,5 @@ https://github.com/WegraLee/deep-learning-from-scratch
 dataset/mnist.py
 common/trainer.py
 common/layers.py - class BatchNormalization
+
+ch6/ wd, do, bn test
