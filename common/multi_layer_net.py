@@ -63,8 +63,8 @@ class MultiLayerNet:
                 std_scale = np.sqrt(1.0 / network_size_list[idx-1])
             # number value
             else:
-                std_scale = int(weight_init_std)
-
+                std_scale = float(weight_init_std)
+                
             # weight
             self.params['W'+str(idx)] = std_scale * np.random.randn(network_size_list[idx-1], network_size_list[idx])
             # bias

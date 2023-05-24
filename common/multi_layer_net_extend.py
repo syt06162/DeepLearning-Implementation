@@ -63,7 +63,7 @@ class MultiLayerNetExtend:
         * weigt_init_std: 'relu' or 'he' -> 'He' (2/sqrt(n))
                         'sigmoid' or 'xavier' -> 'Xavier' (1/sqrt(n))
         """
-        wweight_init_std = str(weight_init_std).lower()
+        weight_init_std = str(weight_init_std).lower()
 
         network_size_list = [self.input_size] + self.hidden_size_list + [self.output_size]
         for idx in range(1, len(network_size_list)):
@@ -75,8 +75,7 @@ class MultiLayerNetExtend:
                 std_scale = np.sqrt(1.0 / network_size_list[idx-1])
             # number value
             else:
-                std_scale = int(weight_init_std)
-
+                std_scale = float(weight_init_std)
 
             # weight
             self.params['W'+str(idx)] = std_scale * np.random.randn(network_size_list[idx-1], network_size_list[idx])
