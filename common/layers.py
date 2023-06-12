@@ -44,15 +44,24 @@ class Affine:
         self.x = None
         self.dW = None
         self.db = None
+
+        # 4dim support
+        self.original_x_shape = None
     
     def forward(self, x):
+        # 4dim support
+        self.original_x_shape = x.shape
+        x = x.reshape(x.shape[0], -1)
         self.x = x
+        
         return np.dot(x, self.W) + self.b
 
     def backward(self, dout):
         dx = np.dot(dout, self.W.T)
         self.dW = np.dot(self.x.T, dout)
         self.db = np.sum(dout, axis=0)
+
+        dx = dx.reshape(*self.original_x_shape)  # 4dim to original shape
         return dx
     
 class SoftmaxWithLoss:
