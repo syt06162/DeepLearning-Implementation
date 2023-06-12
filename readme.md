@@ -12,3 +12,5 @@ common/layers.py - class BatchNormalization
 common/convolution_util.py - im2col, col2im
 
 ch6/ wd, do, bn test
+ch7/ simple_convnet
+ch7/ train_convnet
