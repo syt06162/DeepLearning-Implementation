@@ -7,3 +7,6 @@ testing
 # mnist dataset
 /dataset
 !mnist.py
+
+# conv params
+params.pkl
